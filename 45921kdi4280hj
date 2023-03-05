@@ -1,0 +1,89 @@
+repeat wait() until game:IsLoaded()
+
+local VirtualUser = game:GetService("VirtualUser")
+
+game:GetService("Players").LocalPlayer.Idled:Connect(
+    function()
+        VirtualUser:CaptureController()
+        VirtualUser:ClickButton2(Vector2.new())
+    end
+)
+
+local nameOfGame = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId)
+
+local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/UI-Interface/CustomFIeld/main/RayField.lua'))()
+
+local Window = Rayfield:CreateWindow({
+    Name = nameOfGame.Name,
+    LoadingTitle = "I LOVE BOOBIES HUB",
+    LoadingSubtitle = "by ThatOneGuy",
+    ConfigurationSaving = {
+       Enabled = true,
+       FolderName = nil, 
+       FileName = "(.)(.) Hub"
+    }
+ })
+
+ local Tab = Window:CreateTab("I'm OP NOW")
+
+ local Toggle = Tab:CreateToggle({
+    Name = "Auto Tap",
+    CurrentValue = false,
+    Flag = "TapToggle1", 
+    Callback = function(Value)
+     autotap = Value
+     if autotap then
+         pcall(function ()
+             while autotap do
+                 for i=1, 10 do
+                 task.wait()
+                    game:GetService("ReplicatedStorage").Remotes.attack:FireServer()
+                 end
+             end
+         end)
+     end
+ end,
+ })
+
+ local Toggle = Tab:CreateToggle({
+    Name = "Auto Skill",
+    CurrentValue = false,
+    Flag = "SkillToggle1", 
+    Callback = function(Value)
+     autoSkill = Value
+     if autoSkill then
+         pcall(function ()
+             while autoSkill do
+                local args = {
+                    [1] = "Slot1"
+                }
+
+                game:GetService("ReplicatedStorage").Remotes:FindFirstChild("Send Information"):FireServer(unpack(args))
+                wait()           
+             end
+         end)
+     end
+ end,
+ })
+
+ local Toggle = Tab:CreateToggle({
+    Name = "Auto Collect",
+    CurrentValue = false,
+    Flag = "CollectToggle1", 
+    Callback = function(Value)
+     autoCollect = Value
+     if autoCollect then
+         pcall(function ()
+             while autoCollect and task.wait() do
+                local plr = game.Players.LocalPlayer.Character
+                local Coin = game:GetService("Workspace").Coins:GetChildren()
+                for i, v in pairs(Coin) do
+                    if v:IsA("MeshPart") then
+                        v.CFrame = plr.HumanoidRootPart.CFrame
+                    end
+                end
+             end
+         end)
+     end
+ end,
+ })
