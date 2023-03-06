@@ -87,3 +87,62 @@ local Window = Rayfield:CreateWindow({
      end
  end,
  })
+
+ local worlds = {}
+
+ for _, k in pairs(game:GetService("ReplicatedStorage")["Unloaded_Maps"]:GetChildren()) do
+    if k:IsA("Folder") then
+    table.insert(worlds,k.Name)
+        for _, o in pairs(game:GetService("Workspace").EnemyNPCs:GetChildren()) do
+            if o:IsA("Folder") then
+            table.insert(worlds,o.Name)
+            end
+        end
+    end
+end
+
+
+local Dropdown = Tab:CreateDropdown({
+    Name = "Select World",
+    Options = worlds,
+    CurrentOption = "",
+    Flag = "worldfolder",
+    Callback = function(Option)
+        PickWorld = Option
+    end,
+ })
+
+ local Dropdown = Tab:CreateDropdown({
+    Name = "Select Mob",
+    Options = {"Weak", "Strong", "Miniboss", "Boss", "RaidBoss"},
+    CurrentOption = "",
+    Flag = "MobNum1",
+    Callback = function(Option)
+        Mob = Option
+    end,
+ })
+
+ local Toggle = Tab:CreateToggle({
+    Name = "Auto Farm",
+    CurrentValue = false,
+    Flag = "FarmToggle1", 
+    Callback = function(Value)
+     autoFarm = Value
+     if autoFarm then
+         pcall(function ()
+             while autoFarm and task.wait() do
+                        local plr = game.Players.LocalPlayer.Character
+                        for _, v in pairs(game:GetService("Workspace").EnemyNPCs[PickWorld]:GetChildren()) do
+                        if v.Name == Mob then
+                            for _, l in pairs(v:GetChildren()) do
+                            if l ~= nil then
+                                plr.HumanoidRootPart.CFrame = l.HumanoidRootPart.CFrame * CFrame.new (0,0,2)
+                                end
+                            end
+                        end
+                end
+             end
+         end)
+     end
+ end,
+ })
