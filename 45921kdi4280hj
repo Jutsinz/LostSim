@@ -74,13 +74,11 @@ local Window = Rayfield:CreateWindow({
      autoCollect = Value
      if autoCollect then
          pcall(function ()
+            local plr = game.Players.LocalPlayer.Character
+            local Coin = game:GetService("Workspace").Coins:GetChildren()
              while autoCollect and task.wait() do
-                local plr = game.Players.LocalPlayer.Character
-                local Coin = game:GetService("Workspace").Coins:GetChildren()
-                for i, v in pairs(Coin) do
-                    if v:IsA("MeshPart") then
-                        v.CFrame = plr.HumanoidRootPart.CFrame
-                    end
+                for i, v in pairs(Coin) do            
+                       v.CFrame = plr.HumanoidRootPart.CFrame * Vector3.new(0,0,0)
                 end
              end
          end)
@@ -114,7 +112,7 @@ local Dropdown = Tab:CreateDropdown({
 
  local Dropdown = Tab:CreateDropdown({
     Name = "Select Mob",
-    Options = {"Weak", "Strong", "Miniboss", "Boss", "RaidBoss"},
+    Options = {"Weak", "Strong", "Miniboss", "Boss", "RaidBoss","Night Boss"},
     CurrentOption = "",
     Flag = "MobNum1",
     Callback = function(Option)
